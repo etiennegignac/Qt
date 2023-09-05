@@ -5,6 +5,7 @@ import QtQuick.Window
 import fummins.libraries.Bridge 1.0 //Remember to copy the local QML library to the main Qt folder QML library (bug in QtCreator)
 
 Window {
+    id: mainWindow
     width: 800
     height: 480
     visible: true
@@ -20,83 +21,119 @@ Window {
         id: bridge
     }
 
-    Label {
-        id:driveLabel
-        x: 0
-        y: 13
-        text: "2WD"
-        font.pointSize: 50
-        width: parent.width
-        horizontalAlignment: Text.AlignHCenter
-        color: "yellow"
-        SequentialAnimation on opacity {
+    SwipeView {
+        id: mainSwipeView
+        anchors.fill: parent
 
-            id: driveLabelOpacityAnimation
-            running: true
-            loops: Animation.Infinite
+        Item {
+            id: mainPage
+            anchors.fill: parent
 
-            OpacityAnimator {
-                target: driveLabel
-                from: 0
-                to: 1
-                duration: 500
+            Image {
+                id: drivetrainImage
+                source: "res/drivetrain/2WD_200_250.png"
+                x: (mainWindow.width - width)/2 //Centered
+                y: 60
+                width: 200
+                height: 250
+
+                SequentialAnimation on opacity {
+
+                    id: drivetrainImageOpacityAnimation
+                    running: true
+                    loops: Animation.Infinite
+
+                    OpacityAnimator {
+                        target: drivetrainImage
+                        from: 0
+                        to: 1
+                        duration: 500
+                    }
+
+                    OpacityAnimator {
+                        target: drivetrainImage
+                        from: 1
+                        to: 0
+                        duration: 500
+                    }
+                }
+
             }
 
-            OpacityAnimator {
-                target: driveLabel
-                from: 1
-                to: 0
-                duration: 500
+            Label {
+                id: airLabel
+                y: 109
+                text: "Air tank: --- psi"
+                anchors.bottom: compressorLabel.top
+                color: "#4b4b4b"
+                horizontalAlignment: Text.AlignHCenter
+                font.bold: true
+                anchors.horizontalCenter: drivetrainImage.horizontalCenter
+                font.pointSize: 19
+            }
+            Label {
+                id: compressorLabel
+                y: 109
+                text: "Electric compressor: OFF"
+                anchors.bottom: backBattVoltsLabel.top
+                color: "#4b4b4b"
+                horizontalAlignment: Text.AlignHCenter
+                font.bold: true
+                anchors.horizontalCenter: drivetrainImage.horizontalCenter
+                font.pointSize: 19
+            }
+
+            Label {
+                id: backBattVoltsLabel
+                y: 185
+                text: "House battery: --.- volts"
+                anchors.bottom: parent.bottom
+                color: "#4b4b4b"
+                horizontalAlignment: Text.AlignHCenter
+                font.bold: true
+                anchors.bottomMargin: 10
+                anchors.horizontalCenter: drivetrainImage.horizontalCenter
+                font.pointSize: 19
+            }
+
+            MouseArea {
+                id: drvSeatMouseArea
+                x: 50
+                y: 130
+                width: 180
+                height: 220
+
+                onClicked: {
+                    bridge.toggleDrvSeat()
+                    drvIconRect.color = bridge.returnDrvSeatStatusString()
+                }
+
+                Rectangle {
+                    id: drvIconRect
+                    anchors.fill: parent
+                    color: "darkgray"
+                }
+
+            }
+
+            MouseArea {
+                id: passSeatMouseArea
+                x: 570
+                y: 130
+                width: 180
+                height: 220
+
+                onClicked: {
+                    bridge.togglePassSeat()
+                    passIconRect.color = bridge.returnPassSeatStatusString()
+                }
+                Rectangle {
+                    id: passIconRect
+                    anchors.fill: parent
+                    color: "darkgray"
+                }
+
             }
         }
     }
-
-    MouseArea {
-        id: drvSeatMouseArea
-        x: 100
-        y: 130
-        width: 180
-        height: 220
-
-        onClicked: {
-            bridge.toggleDrvSeat()
-            drvIconRect.color = bridge.returnDrvSeatStatusString()
-        }
-
-        Rectangle {
-            id: drvIconRect
-            anchors.fill: parent
-            color: "darkgray"
-        }
-
-    }
-
-    MouseArea {
-        id: passSeatMouseArea
-        x: 520
-        y: 130
-        width: 180
-        height: 220
-
-        onClicked: {
-            bridge.togglePassSeat()
-            passIconRect.color = bridge.returnPassSeatStatusString()
-        }
-        Rectangle {
-            id: passIconRect
-            anchors.fill: parent
-            color: "darkgray"
-        }
-
-    }
-
-    /*
-    Button {
-        id:drvSeatHeatButton
-        text: bridge.returnDrvSeatStatusString()
-        onClicked: {
-            bridge.toggleDrvSeatHeat() // Update driver seat status
-            text = bridge.returnDrvSeatStatusString() // Change button label to reflect new status
-        }
-    }*/
 }

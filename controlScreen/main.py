@@ -5,7 +5,8 @@
 QML_IMPORT_NAME = "fummins.libraries.Bridge"
 QML_IMPORT_MAJOR_VERSION = 1
 
-import sys, time
+import sys
+# import RPi.GPIO as GPIO
 from pathlib import Path
 
 from PySide6.QtCore import QObject, Slot
@@ -17,6 +18,23 @@ drvSeatStatus = int(0) # 0 = off, 1 = A/C, 2 = Heat
 passSeatStatus = int(0) # 0 = off, 1 = A/C, 2 = Heat
 
 tcaseStatus = int(0) # 0 = UNKNOWN OR WORKING, 1 = 2WD, 2 = 4WD-High, 3 = 4WD-LOW
+
+# Config
+# GPIO.setmode(GPIO.BOARD) # Set pin numbering scheme to board numbering
+
+
+# ----------------------------------- MODBUS ------------------------------------------------------------
+# This Raspberry Pi is the Modbus MASTER (aka client?)
+#
+
+
+
+
+
+
+
+
+
 
 
 # BRIDGE CLASS TO COMMUNICATE BETWEEN PYTHON AND QML
