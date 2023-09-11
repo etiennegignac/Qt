@@ -14,11 +14,43 @@ Window {
 
     // Do this when the window is loaded
     Component.onCompleted: {
-       // switch (bridge.returnTCaseStatus());
+        updateTimer.running = true
     }
 
     Bridge {
         id: bridge
+    }
+
+    Timer {
+        id: updateTimer
+        running: false
+        interval: 5000
+        repeat: true
+        onTriggered:
+        {
+            if(bridge.returnTCaseStatus() === '1')
+            {
+                drivetrainImageOpacityAnimation.running = false;
+            }
+
+            /*switch (1)
+            {
+            case 0: // Unknown, do nothing
+
+                break;
+            case 1: // 2WD, stop animation
+                drivetrainImageOpacityAnimation.running = false;
+                break;
+            case 2: // 4WD-High, switch icon, stop animation
+                drivetrainImageOpacityAnimation.running = false;
+                break;
+            case 3: // 4WD-LOW, switch icon, stop animation
+                drivetrainImageOpacityAnimation.running = false;
+                break;
+            default: // Unknown, do nothing
+                break;
+            }*/
+        }
     }
 
     SwipeView {

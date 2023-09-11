@@ -5,7 +5,7 @@
 QML_IMPORT_NAME = "fummins.libraries.Bridge"
 QML_IMPORT_MAJOR_VERSION = 1
 
-import sys
+import sys, time
 # import RPi.GPIO as GPIO
 from pathlib import Path
 
@@ -43,9 +43,11 @@ class Bridge(QObject):
 
     # Check with transfer case controller what the current status is
     @Slot()
-    def returnTCaseStatus(result=int):
+    def returnTCaseStatus(result=str):
         #time.sleep(5)
-        return 1
+        return "1"
+        print("returning tcase status")
+
         #return tcaseStatus
 
     # Prints something to the console
